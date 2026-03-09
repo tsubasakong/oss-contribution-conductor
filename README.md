@@ -16,3 +16,10 @@ This repo contains a reusable OpenClaw skill for running a disciplined OSS pull-
 - prioritize review feedback and actionable CI
 - interact with maintainers in a friendly, low-noise way
 - structure OpenClaw automation into queue, opener, and monitor lanes
+- keep queue/tracker state in machine-readable files
+
+## New in this revision
+
+- helper scripts for queue refill, safe claim, status updates, tracker sync, state validation, and PR-body rendering
+- concrete issue-discovery and state-schema references
+- error-recovery, cron-setup, CLI-design, and end-to-end walkthrough references

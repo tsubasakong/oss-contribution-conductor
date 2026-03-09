@@ -1,6 +1,15 @@
 ---
 name: oss-pr-workflow
-description: Plan and execute efficient open-source pull requests on GitHub from OpenClaw or the gh CLI. Use when an agent needs to choose a good OSS issue, check contribution etiquette (assignment-first, star-before-PR, templates, CLA, DCO), prepare a small fix, validate honestly, open or update a PR, handle review feedback and CI follow-up, or design a reusable PR automation workflow.
+description: Plan and execute efficient open-source pull requests on GitHub from OpenClaw or the gh CLI. Use when an agent needs to choose a good OSS issue, check contribution etiquette (assignment-first, star-before-PR, templates, CLA, DCO), prepare a small fix, validate honestly, open or update a PR, handle review feedback and CI follow-up, or automate queue/tracker-based OSS PR workflows with helper scripts.
+metadata:
+  openclaw:
+    requires:
+      bins:
+        - gh
+        - git
+        - python3
+      env:
+        - GITHUB_TOKEN
 ---
 
 # OSS PR Workflow
@@ -14,6 +23,7 @@ Optimize for:
 - honest validation
 - fast maintainer-friendly communication
 - finishing existing PRs before opening more
+- file-backed state instead of chat-memory state
 
 ## Operating Loop
 
@@ -100,20 +110,40 @@ Triage rules:
 - Use GitHub emoji reactions to acknowledge comments and keep interactions warm without adding noise.
 - Do not be defensive; make the diff better.
 
-## Fast decision heuristics
+## Use bundled helper scripts for deterministic work
 
-Ask:
-- Is this issue surgically fixable in one branch?
-- Can I validate the touched path honestly on this host?
-- Is there already a PR or duplicate issue?
-- Will this save maintainer time instead of creating review debt?
-- Is the repo asking for assignment or a star first?
+Use `python3 scripts/<name>.py ...` when changing file-backed queue/tracker state or rendering standard output that should stay consistent across runs.
 
-If several answers are no, defer it.
+Prefer scripts for:
+- issue discovery and queue refill
+- queue claim and status transitions
+- tracker sync against GitHub PR state
+- queue/tracker schema validation
+- standard PR body rendering
+
+Do not let scripts replace judgment. The skill still decides:
+- whether an issue is truly worth taking
+- whether etiquette gates are satisfiable
+- whether a CI failure is actionable
+- how to reply to maintainers and reviewers
+
+## State model
+
+When automating, read `references/state-schema.md` before editing queue or tracker files by hand.
+
+Core rule:
+- machine-readable state lives in files
+- durable policy lives in this skill and its references
+- chat history is not the source of truth for queue or tracker state
 
 ## References
 
 Read these only when needed:
 - `references/pr-checklists.md` for reusable preflight, etiquette, PR, and follow-up checklists
-- `references/gh-commands.md` for concrete `gh` commands and review or CI loops
+- `references/gh-commands.md` for concrete `gh` commands, issue discovery patterns, and review or CI loops
+- `references/state-schema.md` for queue/tracker fields, status meanings, and lock semantics
+- `references/error-recovery.md` for common failure modes and recovery paths
+- `references/cron-setup.md` for OpenClaw queue/opener/monitor scheduling patterns
+- `references/example-walkthrough.md` for an end-to-end issue-to-PR example
+- `references/cli-design.md` for the future thin-CLI command tree and tool/skill split
 - `references/openclaw-pipeline.md` for the multi-lane OpenClaw automation pattern that inspired this skill

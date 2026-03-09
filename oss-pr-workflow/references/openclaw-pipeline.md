@@ -8,6 +8,7 @@ This reference describes the reusable OpenClaw workflow pattern behind the skill
 - avoid duplicate work across autonomous agents
 - finish review and CI follow-up instead of endlessly opening new PRs
 - preserve GitHub account isolation when multiple agents/workspaces exist
+- keep machine state in files instead of chat-only memory
 
 ## Suggested lane split
 
@@ -31,6 +32,11 @@ Bad candidate profile:
 - toolchain or platform work your host cannot validate easily
 - issues already covered by another open PR
 
+Recommended helper sequence:
+1. `python3 scripts/validate_state.py --queue ... --tracker ...`
+2. `python3 scripts/refill_queue.py --queue ... --tracker ...`
+3. optional manual triage pass for broad or ambiguous candidates
+
 ### 2. Opener lanes
 
 Run one or more opener lanes in parallel, but give them guardrails:
@@ -43,12 +49,13 @@ Run one or more opener lanes in parallel, but give them guardrails:
 
 Typical opener flow:
 1. verify `gh whoami`
-2. claim one queued issue
+2. `python3 scripts/claim_next.py --queue ... --lock ... --lane opener-a`
 3. inspect templates and contribution rules
 4. implement a surgical fix
 5. run narrow honest validation
 6. open PR with exact template and validation notes
-7. persist queue/tracker state
+7. `python3 scripts/update_item_status.py ...`
+8. persist queue/tracker state
 
 ### 3. PR monitor and sync lane
 
@@ -58,6 +65,12 @@ Responsibilities:
 - detect failing or stale actionable CI
 - repair PR-body or template-compliance problems
 - push follow-up fixes and re-run checks when appropriate
+
+Recommended helper sequence:
+1. `python3 scripts/validate_state.py --queue ... --tracker ...`
+2. `python3 scripts/sync_tracker.py --tracker ...`
+3. inspect highest-priority follow-up candidates
+4. make the smallest needed follow-up patch
 
 Recommended priority order:
 1. unresolved review feedback
@@ -79,6 +92,8 @@ Why this matters:
 - agents reboot
 - cron sessions accumulate history
 - file-based state survives session resets better than memory alone
+
+See `references/state-schema.md` for concrete fields and status rules.
 
 ## Contribution etiquette checks
 
@@ -131,3 +146,4 @@ When the system grows:
 - exclude noisy or low-fit repos from intake
 - recreate long-lived cron jobs if their session history becomes bloated
 - compact durable policy into files so new sessions inherit the workflow quickly
+- wrap the helper scripts in a thin `oss-pr` CLI only after the scripts and schema have stabilized

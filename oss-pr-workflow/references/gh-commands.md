@@ -11,17 +11,92 @@ git config user.email
 git remote -v
 ```
 
+## Issue discovery
+
+### Search for good-first issues in a language
+
+```bash
+gh search issues \
+  --state open \
+  --label "good first issue" \
+  --language python \
+  --sort updated \
+  --limit 20 \
+  --json number,title,url,updatedAt,repository,labels
+```
+
+### Search for help-wanted work
+
+```bash
+gh search issues \
+  --state open \
+  --label "help wanted" \
+  --language typescript \
+  --sort updated \
+  --limit 20 \
+  --json number,title,url,updatedAt,repository,labels
+```
+
+### Search by raw query when labels are inconsistent
+
+```bash
+gh search issues "sidebar bug label:bug state:open" \
+  --limit 20 \
+  --json number,title,url,updatedAt,repository,labels
+```
+
+### Drive queue refill through the helper script
+
+```bash
+python3 scripts/refill_queue.py \
+  --queue ~/code/oss/.ai-pr-targets.json \
+  --tracker ~/code/oss/.ai-pr-origin-tracker.json \
+  --label "good first issue" \
+  --language python \
+  --limit 20
+```
+
 ## Inspect an issue before starting
 
 ```bash
 gh issue view 123 --repo owner/repo
 gh issue view 123 --repo owner/repo --comments
+gh issue view 123 --repo owner/repo --json title,body,assignees,labels,comments,url
 ```
 
-Check linked PRs or duplicate signals:
+## Detect duplicate work or related PRs
+
+### Check the issue itself for linked signals
 
 ```bash
-gh issue view 123 --repo owner/repo --json title,body,assignees,labels,comments,url
+gh issue view 123 --repo owner/repo --json title,body,labels,comments,url
+```
+
+### Search open PRs in the same repo for similar issue references
+
+```bash
+gh pr list --repo owner/repo --state open --search "123" --limit 20
+```
+
+### GraphQL pattern for richer dedupe checks
+
+Use this when you need to inspect issue references or cross-links more precisely than the basic CLI search allows.
+
+```bash
+gh api graphql -f query='\
+query($owner:String!, $repo:String!, $number:Int!) {\
+  repository(owner:$owner, name:$repo) {\
+    issue(number:$number) {\
+      title\
+      url\
+      timelineItems(first:50, itemTypes:[CONNECTED_EVENT, CROSS_REFERENCED_EVENT]) {\
+        nodes {\
+          __typename\
+        }\
+      }\
+    }\
+  }\
+}' -F owner=owner -F repo=repo -F number=123
 ```
 
 ## Inspect contribution requirements
@@ -65,6 +140,13 @@ gh run view <run-id> --repo owner/repo
 gh run view <run-id> --repo owner/repo --log-failed
 ```
 
+## Tracker sync helper
+
+```bash
+python3 scripts/sync_tracker.py \
+  --tracker ~/code/oss/.ai-pr-origin-tracker.json
+```
+
 ## Review feedback loop
 
 Find PRs that likely need attention:
@@ -82,7 +164,16 @@ gh pr checks 55 --repo owner/repo
 
 ## Update PR body if a bot enforces a template
 
+Generate a starting body with the helper script, then adapt it to the repo template:
+
 ```bash
+python3 scripts/render_pr_body.py \
+  --issue 123 \
+  --problem "Explain the bug clearly." \
+  --fix "Explain the narrow fix clearly." \
+  --validation "git diff --check" \
+  --output ./pr-body.md
+
 gh pr edit 55 --repo owner/repo --body-file ./pr-body.md
 ```
 
