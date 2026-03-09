@@ -1,11 +1,11 @@
-# OpenClaw OSS PR Skill
+# OSS Contribution Conductor
 
 This repo contains a reusable OpenClaw skill for running a disciplined OSS pull-request workflow on GitHub.
 
 ## Contents
 
-- `oss-pr-workflow/` — source skill folder
-- `oss-pr-workflow.skill` — packaged artifact for easy sharing
+- `oss-contribution-conductor/` — source skill folder
+- `oss-contribution-conductor.skill` — packaged artifact for easy sharing
 
 ## What the skill teaches
 

@@ -31,7 +31,7 @@ Suggested cadence:
 Prompt shape:
 
 ```text
-Use the oss-pr-workflow skill. Refill and triage the OSS issue queue.
+Use the oss-contribution-conductor skill. Refill and triage the OSS issue queue.
 1. Run the queue validation helper first.
 2. Re-triage the front of the queue and block duplicates, obsolete items, and broad low-fit work.
 3. If actionable queue depth is below target, run the refill helper with the current discovery profile.
@@ -48,7 +48,7 @@ Suggested cadence:
 Prompt shape:
 
 ```text
-Use the oss-pr-workflow skill. Run opener lane A.
+Use the oss-contribution-conductor skill. Run opener lane A.
 1. Validate state.
 2. Verify GitHub identity.
 3. Claim exactly one queued issue with the claim helper.
@@ -69,7 +69,7 @@ Suggested cadence:
 Prompt shape:
 
 ```text
-Use the oss-pr-workflow skill. Run the PR monitor and sync lane.
+Use the oss-contribution-conductor skill. Run the PR monitor and sync lane.
 1. Validate state.
 2. Sync tracker against GitHub.
 3. Prioritize unresolved review feedback, then actionable failing or stale CI.

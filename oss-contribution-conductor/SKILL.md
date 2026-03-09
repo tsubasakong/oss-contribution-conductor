@@ -1,5 +1,5 @@
 ---
-name: oss-pr-workflow
+name: oss-contribution-conductor
 description: Plan and execute efficient open-source pull requests on GitHub from OpenClaw or the gh CLI. Use when an agent needs to choose a good OSS issue, check contribution etiquette (assignment-first, star-before-PR, templates, CLA, DCO), prepare a small fix, validate honestly, open or update a PR, handle review feedback and CI follow-up, or automate queue/tracker-based OSS PR workflows with helper scripts.
 metadata:
   openclaw:
@@ -12,7 +12,7 @@ metadata:
         - GITHUB_TOKEN
 ---
 
-# OSS PR Workflow
+# OSS Contribution Conductor
 
 ## Overview
 
