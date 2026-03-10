@@ -1,0 +1,41 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Validate repository
+        run: make validate
+
+      - name: Rebuild packaged skill
+        run: python3 tools/package_skill.py
+
+      - name: Generate checksum
+        run: sha256sum oss-contribution-conductor.skill > oss-contribution-conductor.skill.sha256
+
+      - name: Create GitHub release
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            oss-contribution-conductor.skill \
+            oss-contribution-conductor.skill.sha256 \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes
