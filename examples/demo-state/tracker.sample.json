@@ -1,0 +1,26 @@
+[
+  {
+    "repo": "example/project",
+    "issue": 77,
+    "pr": 81,
+    "status": "open",
+    "author": "octocat",
+    "lane": "opener-a",
+    "title": "Docs: update outdated flag name",
+    "url": "https://github.com/example/project/pull/81",
+    "created_at": "2026-03-09T00:05:00Z",
+    "last_checked_at": "2026-03-09T00:10:00Z",
+    "review_decision": "REVIEW_REQUIRED",
+    "merge_state_status": "CLEAN",
+    "github_updated_at": "2026-03-09T00:10:00Z",
+    "ci": {
+      "success": 1,
+      "failure": 0,
+      "pending": 0,
+      "cancelled": 0,
+      "neutral": 0,
+      "total": 1
+    },
+    "attention": []
+  }
+]

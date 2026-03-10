@@ -3,6 +3,7 @@
 [![Validate](https://github.com/tsubasakong/oss-contribution-conductor/actions/workflows/validate.yml/badge.svg)](https://github.com/tsubasakong/oss-contribution-conductor/actions/workflows/validate.yml)
 [![Skill package](https://img.shields.io/badge/package-.skill-blue)](./oss-contribution-conductor.skill)
 [![OpenClaw skill](https://img.shields.io/badge/OpenClaw-skill-7c3aed)](./oss-contribution-conductor/SKILL.md)
+[![Changelog](https://img.shields.io/badge/changelog-date--based-orange)](./CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](./LICENSE)
 
 A reusable OpenClaw skill and helper toolkit for running disciplined, maintainer-friendly open-source contribution workflows on GitHub.
@@ -22,21 +23,30 @@ OSS Contribution Conductor packages the workflow that avoids those mistakes:
 - a reusable skill with judgment-heavy guidance
 - deterministic helper scripts for queue and tracker state
 - references for etiquette, CI triage, cron lane design, and error recovery
+- sample state files that show the data model concretely
 - a distributable `.skill` artifact for easy sharing
 
 ## What’s inside
 
 ```text
 .
-├── README.md
+├── CHANGELOG.md
+├── CODE_OF_CONDUCT.md
 ├── CONTRIBUTING.md
 ├── LICENSE
 ├── Makefile
+├── README.md
+├── examples/
+│   └── demo-state/
 ├── oss-contribution-conductor/
 │   ├── SKILL.md
 │   ├── references/
 │   └── scripts/
 ├── oss-contribution-conductor.skill
+├── tests/
+│   ├── fixtures/
+│   ├── run_all.py
+│   └── test_cli_scripts.py
 └── tools/
     ├── package_skill.py
     └── validate_repo.py
@@ -61,12 +71,23 @@ The skill ships with deterministic helpers for the repetitive parts of the workf
 | `scripts/render_pr_body.py` | Generate a clean starter PR body |
 | `scripts/common.py` | Shared helpers used by the other scripts |
 
+### Example state and smoke tests
+Inspired by larger harness repos, this repo now ships a small amount of executable proof instead of only documentation.
+
+- `examples/demo-state/queue.sample.json` and `tracker.sample.json` show the queue/tracker schema with realistic values.
+- `tests/test_cli_scripts.py` exercises the helper CLIs against those samples and fixture data.
+- `tests/run_all.py` keeps local and CI test runs dependency-free.
+
 ### Packaged artifact
 - `oss-contribution-conductor.skill` is the distributable archive built from the source skill folder.
 
+### Community and maintenance docs
+- `CHANGELOG.md` tracks meaningful repo changes in a lightweight date-based format.
+- `CODE_OF_CONDUCT.md` sets the tone for collaboration without turning the repo into policy theater.
+
 ## Quick start
 
-### Read the skill
+### 1. Read the skill
 Start with:
 - [`oss-contribution-conductor/SKILL.md`](./oss-contribution-conductor/SKILL.md)
 
@@ -80,13 +101,19 @@ Then pull in references as needed:
 - `references/cli-design.md`
 - `references/openclaw-pipeline.md`
 
-### Use the source skill or the packaged archive
+### 2. Inspect the sample state
+If you want to understand the queue/tracker model before wiring up automation, open:
+- [`examples/demo-state/queue.sample.json`](./examples/demo-state/queue.sample.json)
+- [`examples/demo-state/tracker.sample.json`](./examples/demo-state/tracker.sample.json)
+
+### 3. Use the source skill or the packaged archive
 Depending on how you manage OpenClaw skills, either:
 - use the source folder directly from `oss-contribution-conductor/`, or
 - share/import the packaged `oss-contribution-conductor.skill` archive
 
-### Validate and refresh the package locally
+### 4. Validate, test, and refresh the package locally
 ```bash
+make test
 make validate
 make package
 ```
@@ -111,7 +138,8 @@ This repo is opinionated on purpose.
 
 ### Useful commands
 ```bash
-make validate   # repo checks + Python compile checks + package parity
+make test       # run stdlib Python smoke tests
+make validate   # repo checks + compile checks + smoke tests + package parity
 make package    # rebuild oss-contribution-conductor.skill from source
 ```
 
@@ -120,7 +148,9 @@ make package    # rebuild oss-contribution-conductor.skill from source
 This repo includes a validation workflow that checks:
 - the skill frontmatter is sane
 - the committed `.skill` archive matches the source folder
-- the helper scripts compile cleanly
+- the helper scripts and tests compile cleanly
+- the smoke-test suite passes
+- the sample queue/tracker state stays valid JSON
 
 That keeps the repo feeling maintained instead of drifting out of sync.
 
@@ -133,13 +163,14 @@ Short version:
 - avoid adding fluffy docs inside the skill itself
 - preserve the split between judgment-heavy guidance and deterministic helpers
 - keep the packaged `.skill` archive in sync with source changes
+- run the smoke tests before opening a PR
 
 ## Roadmap ideas
 
 Good next-level improvements if the repo grows:
 - release automation for tagged `.skill` artifacts
 - a thin `oss-pr` wrapper CLI over the helper scripts
-- sample queue/tracker fixtures and script tests
+- more fixture coverage around tracker sync edge cases
 - a public demo walkthrough using a real contribution from issue to merged PR
 
 ## License

@@ -1,0 +1,47 @@
+[
+  {
+    "number": 42,
+    "title": "Sidebar keeps stale active state",
+    "url": "https://github.com/example/project/issues/42",
+    "updatedAt": "2026-03-09T00:12:00Z",
+    "repository": {
+      "nameWithOwner": "example/project"
+    },
+    "labels": [
+      {
+        "name": "bug"
+      }
+    ],
+    "assignees": []
+  },
+  {
+    "number": 77,
+    "title": "Docs mention outdated flag name",
+    "url": "https://github.com/example/project/issues/77",
+    "updatedAt": "2026-03-09T00:15:00Z",
+    "repository": {
+      "nameWithOwner": "example/project"
+    },
+    "labels": [
+      {
+        "name": "documentation"
+      }
+    ],
+    "assignees": []
+  },
+  {
+    "number": 99,
+    "title": "Add missing CLA note to contributor docs",
+    "url": "https://github.com/example/project/issues/99",
+    "updatedAt": "2026-03-09T00:20:00Z",
+    "repository": {
+      "nameWithOwner": "example/project"
+    },
+    "labels": [
+      {
+        "name": "documentation"
+      }
+    ],
+    "assignees": []
+  }
+]

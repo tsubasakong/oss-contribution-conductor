@@ -1,0 +1,61 @@
+[
+  {
+    "repo": "example/project",
+    "issue": 42,
+    "title": "Sidebar keeps stale active state",
+    "url": "https://github.com/example/project/issues/42",
+    "status": "queued",
+    "priority": "normal",
+    "claimed_by": null,
+    "claimed_at": null,
+    "source": "demo",
+    "created_at": "2026-03-09T00:00:00Z",
+    "updated_at": "2026-03-09T00:00:00Z",
+    "labels": [
+      "bug"
+    ],
+    "discovery": {
+      "query": "label:bug sort:updated-desc",
+      "labels": [
+        "bug"
+      ],
+      "languages": [
+        "TypeScript"
+      ],
+      "repos": [
+        "example/project"
+      ],
+      "sort": "updated"
+    }
+  },
+  {
+    "repo": "example/project",
+    "issue": 77,
+    "title": "Docs mention outdated flag name",
+    "url": "https://github.com/example/project/issues/77",
+    "status": "opened",
+    "priority": "normal",
+    "claimed_by": null,
+    "claimed_at": null,
+    "source": "demo",
+    "created_at": "2026-03-09T00:00:00Z",
+    "updated_at": "2026-03-09T00:05:00Z",
+    "opened_pr": 81,
+    "labels": [
+      "documentation"
+    ],
+    "discovery": {
+      "query": "label:documentation sort:updated-desc",
+      "labels": [
+        "documentation"
+      ],
+      "languages": [
+        "Markdown"
+      ],
+      "repos": [
+        "example/project"
+      ],
+      "sort": "updated"
+    }
+  }
+]

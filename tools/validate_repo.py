@@ -9,6 +9,10 @@ ROOT = Path(__file__).resolve().parent.parent
 SKILL_DIR = ROOT / "oss-contribution-conductor"
 ARCHIVE = ROOT / "oss-contribution-conductor.skill"
 README = ROOT / "README.md"
+CHANGELOG = ROOT / "CHANGELOG.md"
+CODE_OF_CONDUCT = ROOT / "CODE_OF_CONDUCT.md"
+SAMPLE_QUEUE = ROOT / "examples" / "demo-state" / "queue.sample.json"
+SAMPLE_TRACKER = ROOT / "examples" / "demo-state" / "tracker.sample.json"
 
 
 def parse_frontmatter(path: Path) -> dict[str, str]:
@@ -50,11 +54,26 @@ def read_archive_files() -> dict[str, bytes]:
     return files
 
 
+def require_json_array(path: Path) -> None:
+    if not path.exists():
+        raise SystemExit(f"missing required file: {path.relative_to(ROOT)}")
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise SystemExit(f"{path.relative_to(ROOT)} is not valid JSON: {exc}") from exc
+    if not isinstance(payload, list):
+        raise SystemExit(f"{path.relative_to(ROOT)} must contain a JSON array")
+
+
 def main() -> int:
-    if not README.exists():
-        raise SystemExit("missing README.md")
+    for path in (README, CHANGELOG, CODE_OF_CONDUCT):
+        if not path.exists():
+            raise SystemExit(f"missing required file: {path.relative_to(ROOT)}")
     if not SKILL_DIR.exists():
         raise SystemExit("missing skill source directory")
+
+    require_json_array(SAMPLE_QUEUE)
+    require_json_array(SAMPLE_TRACKER)
 
     skill_md = SKILL_DIR / "SKILL.md"
     if not skill_md.exists():
@@ -86,6 +105,7 @@ def main() -> int:
         "skill": SKILL_DIR.name,
         "source_file_count": len(source_files),
         "archive_file_count": len(archive_files),
+        "examples_checked": [SAMPLE_QUEUE.relative_to(ROOT).as_posix(), SAMPLE_TRACKER.relative_to(ROOT).as_posix()],
     }
     print(json.dumps(summary, indent=2))
     return 0
