@@ -1,0 +1,39 @@
+name: Bug report
+description: Report a bug in the skill content, repo tooling, or helper scripts.
+title: "bug: "
+labels:
+  - bug
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: What broke?
+      description: Describe the bug clearly and concretely.
+    validations:
+      required: true
+  - type: textarea
+    id: location
+    attributes:
+      label: Where is the problem?
+      description: Mention the file, script, reference, workflow, or command involved.
+      placeholder: oss-contribution-conductor/scripts/validate_state.py
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: How can it be reproduced?
+      description: Include exact commands, inputs, or steps when possible.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect instead?
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Extra context
+      description: Logs, screenshots, environment notes, or related links.

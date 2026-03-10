@@ -1,0 +1,38 @@
+name: Improvement request
+description: Suggest a focused improvement to the skill, scripts, repo tooling, or workflow guidance.
+title: "improve: "
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem should this improve?
+      description: Describe the real workflow pain, ambiguity, or missing capability.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed improvement
+      description: Keep it concrete and scoped.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - SKILL.md
+        - References
+        - Helper scripts
+        - Packaging / validation
+        - README / repo presentation
+        - GitHub automation
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Extra notes
+      description: Related issues, examples, or trade-offs.

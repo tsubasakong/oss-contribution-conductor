@@ -14,6 +14,14 @@ metadata:
 
 # OSS Contribution Conductor
 
+## Contents
+
+- [Overview](#overview)
+- [Operating Loop](#operating-loop)
+- [Use bundled helper scripts for deterministic work](#use-bundled-helper-scripts-for-deterministic-work)
+- [State model](#state-model)
+- [References](#references)
+
 ## Overview
 
 Use this skill to contribute small, high-leverage fixes to open-source repositories without wasting maintainer time.
